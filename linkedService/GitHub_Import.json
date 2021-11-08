@@ -1,0 +1,12 @@
+{
+	"name": "GitHub_Import",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://github.com/moiz491/DevOps_Learning",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
