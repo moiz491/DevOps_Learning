@@ -1,0 +1,9 @@
+{
+	"name": "moizdatafactory",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "fc2357c3-44cf-4657-aed9-4d9de1bed6f8",
+		"tenantId": "b790f6ff-34c5-4074-bc2e-2f6be41e5870"
+	}
+}
