@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "https://github.com/moiz491/DevOps_Learning/blob/main/Premiumdata-EntityID.csv",
+			"url": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/Premiumdata-EntityID.csv",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
