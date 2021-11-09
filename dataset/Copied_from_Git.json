@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "abcd",
+				"fileName": "Copied_file_from_Git",
 				"container": "copieddata"
 			},
 			"columnDelimiter": ",",
