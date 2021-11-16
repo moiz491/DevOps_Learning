@@ -56,7 +56,7 @@
     "Outputs":{
         "Conn_String":{
             "type": "secureString",
-            "Value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccounts_armtemplatetry1_name'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2021-06-01').keys[0].value))]"
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccounts_armtemplatetry1_name'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2021-06-01').keys[0].value))]"
         }
     }
 }
