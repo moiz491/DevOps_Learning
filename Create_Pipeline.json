@@ -4,8 +4,7 @@
     "parameters": {
         "factoryName": {
             "type": "string",
-            "metadata": "Data Factory name",
-            "defaultValue": "moizdatafactory"
+            "metadata": "Data Factory name"
         },
         "storageAccounts_armtemplatetry1_name": {
             "type": "String"
