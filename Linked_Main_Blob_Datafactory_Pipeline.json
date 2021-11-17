@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccounts_armtemplatetry1_name": {
+            "defaultValue": "armtemplatetry1",
+            "type": "String"
+        }
+    },
+    "variables": {
+        "linked-template": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/Blob_Storage_Account_ARM_Template_Edit.json",
+        "linked-template-two": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/Create_Data_Factory.json",
+        "linked-template-three": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/Create_Pipeline.json"
+    },
+    "resources": [
+        {
+            "name": "storage",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linked-template')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters":{
+                    "storageAccounts_armtemplatetry1_name":{
+                        "value": "[parameters('storageAccounts_armtemplatetry1_name')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "datafactory",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-06-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','storage')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linked-template-two')]",
+                    "contentVersion": "1.0.0.0"
+                }
+            }
+        },
+        {
+            "name": "pipeline",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-06-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','storage')]",
+                "[resourceId('Microsoft.Resources/deployments','datafactory')]"
+            ],
+             
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linked-template-three')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters":{
+                    "storageAccounts_armtemplatetry1_name":{
+                        "value": "[parameters('storageAccounts_armtemplatetry1_name')]"
+                    }
+                }
+
+            }
+            
+        }
+    ]
+}
