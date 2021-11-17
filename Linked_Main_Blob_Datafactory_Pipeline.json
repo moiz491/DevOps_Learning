@@ -5,6 +5,9 @@
         "storageAccounts_armtemplatetry1_name": {
             "defaultValue": "armtemplatetry1",
             "type": "String"
+        },
+        "factoryName": {
+            "type": "string"
         }
     },
     "variables": {
@@ -42,6 +45,11 @@
                 "templateLink": {
                     "uri": "[variables('linked-template-two')]",
                     "contentVersion": "1.0.0.0"
+                },
+                "parameters":{
+                    "factoryName":{
+                    "value": "[parameters('factoryName')]"
+                    }
                 }
             }
         },
@@ -63,7 +71,10 @@
                 "parameters":{
                     "storageAccounts_armtemplatetry1_name":{
                         "value": "[parameters('storageAccounts_armtemplatetry1_name')]"
-                    }
+                    },
+                    "factoryName":{
+                        "value": "[parameters('factoryName')]"
+                        }
                 }
 
             }
