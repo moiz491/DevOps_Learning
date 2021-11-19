@@ -5,6 +5,7 @@
         "storageAccounts_Name": {
             "type": "String"
         }
+        
     },
     "variables": {
         "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_Name'))]"
