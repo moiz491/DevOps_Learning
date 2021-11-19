@@ -5,7 +5,7 @@
         "factoryName": {
             "type": "string"
         },
-        "storageAccounts_armtemplatetry1_name": {
+        "storageAccounts_Name": {
             "type": "String"
         },
         "GitHub_Import_properties_typeProperties_url": {
@@ -19,7 +19,7 @@
     },
     "variables": {
         "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]",
-        "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_armtemplatetry1_name'))]"
+        "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_Name'))]"
     },
     "resources": [
         {
@@ -122,7 +122,7 @@
                 "annotations": [],
                 "type": "AzureBlobStorage",
                 "typeProperties": {
-                    "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccounts_armtemplatetry1_name'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2021-06-01').keys[0].value))]"
+                    "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccounts_Name'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2021-06-01').keys[0].value))]"
                 }
             },
             "dependsOn": []
