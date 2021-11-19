@@ -14,7 +14,7 @@
             "condition": "[equals(parameters('StorageType'), 'ADLS')]",
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2021-06-01",
-            "name": "armtemplatetry1",
+            "name": "[parameters('storageAccounts_Name')]",
             "location": "eastus",
             "sku": {
                 "name": "Standard_RAGRS",
