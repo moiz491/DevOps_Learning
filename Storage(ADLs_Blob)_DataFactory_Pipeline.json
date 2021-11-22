@@ -1,0 +1,113 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccounts_Name": {
+            "type": "String"
+        },
+        "factoryName": {
+            "type": "string"
+        },
+        "StorageType":{
+            "type": "string",
+            "defaultValue": "Blob",
+            "allowedValues": [
+                "ADLS",
+                "Blob"
+            ]
+        }
+    },
+    "variables": {
+        "linked-template": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/ADLS%20Linked.json",
+        "linked-template-two": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/Blob%20Linked.json",
+        "linked-template-three": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/Create_Data_Factory.json",
+        "linked-template-four": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/Create_Pipeline.json"
+    },
+    "resources": [
+        {
+            "condition": "[equals(parameters('StorageType'), 'ADLS')]",
+            "name": "storageADLS",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linked-template')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters":{
+                    "storageAccounts_Name":{
+                        "value": "[parameters('storageAccounts_Name')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('StorageType'), 'Blob')]",
+            "name": "storageblob",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linked-template-two')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters":{
+                    "storageAccounts_Name":{
+                        "value": "[parameters('storageAccounts_Name')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "datafactory",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-06-01",
+             "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','storageADLS')]",
+                "[resourceId('Microsoft.Resources/deployments','storageblob')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linked-template-three')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters":{
+                    "factoryName":{
+                    "value": "[parameters('factoryName')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "pipeline",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-06-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','datafactory')]",
+                "[resourceId('Microsoft.Resources/deployments','storageADLS')]",
+                "[resourceId('Microsoft.Resources/deployments','storageblob')]"
+            ],
+             
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linked-template-four')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters":{
+                    "storageAccounts_Name":{
+                        "value": "[parameters('storageAccounts_Name')]"
+                    },
+                    "factoryName":{
+                        "value": "[parameters('factoryName')]"
+                        }
+                }
+
+            }
+            
+        }
+    ]
+}
