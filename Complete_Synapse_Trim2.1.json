@@ -76,7 +76,7 @@
                     "condition": "[parameters('allowAllConnections')]",
                     "apiVersion": "2021-06-01",
                     "dependsOn": [
-                        "[concat('Microsoft.Synapse/workspaces/', parameters('name'))]"
+                        "[concat('Microsoft.Synapse/workspaces/', parameters('Synapse_Workspace_Name'))]"
                     ],
                     "location": "[parameters('location')]",
                     "name": "allowAll",
