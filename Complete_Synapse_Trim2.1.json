@@ -1,0 +1,96 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.1",
+    "parameters": {
+        "Synapse_Workspace_Name": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "East US"
+        },
+        "storageAccounts_Name": {
+            "type": "string"
+        },
+        "Container_Name": {
+            "type": "string"
+        },
+        "sqlAdministratorLogin": {
+            "type": "string",
+            "defaultValue": "moizsynapseARM"
+        },
+        "sqlAdministratorLoginPassword": {
+            "type": "secureString",
+            "defaultValue": ""
+        },
+        "allowAllConnections": {
+            "type": "bool",
+            "defaultValue": true
+        },
+        "managedVirtualNetwork": {
+            "type": "string",
+            "allowedValues": [
+                "default",
+                ""
+            ]
+        },
+        "tagValues": {
+            "type": "object",
+            "defaultValue": {}
+        },
+        "storageSupportsHttpsTrafficOnly": {
+            "type": "bool",
+            "defaultValue": true
+        },
+
+        "defaultAdlsGen2AccountResourceId": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "storageBlobDataContributorRoleID": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+        "defaultDataLakeStorageAccountUrl": "[concat('https://', parameters('storageAccounts_Name'), '.dfs.core.windows.net')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2021-06-01",
+            "name": "[parameters('Synapse_Workspace_Name')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.Synapse/workspaces",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "defaultDataLakeStorage": {
+                    "accountUrl": "[variables('defaultDataLakeStorageAccountUrl')]",
+                    "filesystem": "[parameters('Container_Name')]",
+                    "resourceId": "[parameters('defaultAdlsGen2AccountResourceId')]"
+                },
+                "managedVirtualNetwork": "[parameters('managedVirtualNetwork')]",
+                "sqlAdministratorLogin": "[parameters('sqlAdministratorLogin')]",
+                "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorLoginPassword')]"
+            },
+            "resources": [
+                {
+                    "condition": "[parameters('allowAllConnections')]",
+                    "apiVersion": "2021-06-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.Synapse/workspaces/', parameters('name'))]"
+                    ],
+                    "location": "[parameters('location')]",
+                    "name": "allowAll",
+                    "properties": {
+                        "startIpAddress": "0.0.0.0",
+                        "endIpAddress": "255.255.255.255"
+                    },
+                    "type": "firewallrules"
+                }
+            ],
+            "dependsOn": [
+            ],
+            "tags": "[parameters('tagValues')]"
+        }
+    ],
+    "outputs": {}
+}
