@@ -1,0 +1,38 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "Synapse_Workspace_Name": {
+                            "type": "string"
+                        },
+
+                         "storageAccounts_Name": {
+                            "type": "string"
+                        },
+                        "storageRoleUniqueId": {
+                            "type": "string",
+                            "defaultValue": "[newGuid()]"
+                        },
+                        "storageLocation": {
+                            "type": "string",
+                            "defaultValue": "[resourceGroup().location]"
+                        }
+                    },
+                    "variables": {
+                        "storageBlobDataContributorRoleID": "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
+                            "apiVersion": "2018-09-01-preview",
+                            "name": "[concat(parameters('storageAccounts_Name'), '/Microsoft.Authorization/',  guid(concat(resourceGroup().id, '/', variables('storageBlobDataContributorRoleID'), '/', parameters('Synapse_Workspace_Name'), '/', parameters('storageRoleUniqueId'))))]",
+                            "location": "[parameters('storageLocation')]",
+                            "properties": {
+                                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('storageBlobDataContributorRoleID'))]",
+                                "principalId": "[reference(concat('Microsoft.Synapse/workspaces/', parameters('Synapse_Workspace_Name')), '2019-06-01-preview', 'Full').identity.principalId]",
+                                "principalType": "ServicePrincipal"
+                            }
+                        }
+                    ],
+                    "outputs": {}
+                }
