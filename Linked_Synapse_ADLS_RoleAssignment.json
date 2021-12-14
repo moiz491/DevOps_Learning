@@ -1,0 +1,110 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Synapse_Workspace_Name": {
+            "type": "string"
+        },
+        "storageAccounts_Name": {
+            "type": "string"
+        },
+        "Container_Name": {
+            "type": "string"
+        },
+        "managedVirtualNetwork": {
+            "type": "string",
+            "allowedValues": [
+                "default",
+                ""
+            ]
+        },
+        "storageSupportsHttpsTrafficOnly": {
+            "type": "bool",
+            "defaultValue": true
+        }
+    },
+    "variables": {
+        "linked-template": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/ADLS_%2B_Container.json",
+        "linked-template-two": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/Complete_Synapse_Trim2.1.json",
+        "linked-template-three": "https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/Role_Assignment.json"
+    },
+    "resources": [
+        {
+            "name": "storageADLS",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linked-template')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters":{
+                    "storageAccounts_Name":{
+                        "value": "[parameters('storageAccounts_Name')]"
+                    },
+                    "Container_Name":{
+                        "value": "[parameters('Container_Name')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "CreateSynapseWorkspace",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','storageADLS')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linked-template-two')]",
+                    "contentVersion": "1.0.0.1"
+                },
+                "parameters":{
+                    "Synapse_Workspace_Name":{
+                        "value": "[parameters('Synapse_Workspace_Name')]"
+                    },
+                    "storageAccounts_Name":{
+                        "value": "[parameters('storageAccounts_Name')]"
+                    },
+                    "Container_Name":{
+                        "value": "[parameters('Container_Name')]"
+                    },
+                    "managedVirtualNetwork":{
+                        "value": "[parameters('managedVirtualNetwork')]"
+                    },
+                    "storageSupportsHttpsTrafficOnly":{
+                        "value": "[parameters('storageSupportsHttpsTrafficOnly')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "RoleAssignment",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','storageADLS')]",
+                "[resourceId('Microsoft.Resources/deployments','CreateSynapseWorkspace')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linked-template-three')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters":{
+                    "Synapse_Workspace_Name":{
+                        "value": "[parameters('Synapse_Workspace_Name')]"
+                    },
+                    "storageAccounts_Name":{
+                        "value": "[parameters('storageAccounts_Name')]"
+                    }
+                }
+            }
+        }
+
+    ]
+}
