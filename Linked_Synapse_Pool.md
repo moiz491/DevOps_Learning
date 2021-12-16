@@ -1,0 +1,1 @@
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/moiz491/DevOps_Learning/main/Linked_Synapse_ADLS_RoleAssignment_SqlPool.json)
