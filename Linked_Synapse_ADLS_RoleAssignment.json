@@ -21,6 +21,14 @@
         "storageSupportsHttpsTrafficOnly": {
             "type": "bool",
             "defaultValue": true
+        },
+        "sqlAdministratorLogin": {
+            "type": "string",
+            "defaultValue": "moizsynapseARM"
+        },
+        "sqlAdministratorLoginPassword": {
+            "type": "securestring",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -77,6 +85,12 @@
                     },
                     "storageSupportsHttpsTrafficOnly":{
                         "value": "[parameters('storageSupportsHttpsTrafficOnly')]"
+                    },
+                    "sqlAdministratorLogin": {
+                        "value": "[parameters('sqlAdministratorLogin')]"
+                    },
+                    "sqlAdministratorLoginPassword": {
+                        "value": "[parameters('sqlAdministratorLoginPassword')]"
                     }
                 }
             }
