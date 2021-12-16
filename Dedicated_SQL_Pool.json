@@ -18,7 +18,7 @@
             "type": "string",
             "defaultValue": "East US"
         },
-        "workspaceName": {
+        "Synapse_Workspace_Name": {
             "type": "string"
         },
         "collation": {
@@ -40,7 +40,7 @@
             "apiVersion": "2021-03-01",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
-            "name": "[concat(parameters('workspaceName'), '/', parameters('sqlPoolName'))]",
+            "name": "[concat(parameters('Synapse_Workspace_Name'), '/', parameters('sqlPoolName'))]",
             "sku": {
                 "name": "[parameters('sku')]"
             },
