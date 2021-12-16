@@ -1,0 +1,53 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlPoolName": {
+            "type": "string"
+        },
+        "sku": {
+            "type": "string",
+            "allowedValues": [
+                "DW100C",
+                "DW200C",
+                "DW400C"
+            ],
+            "defaultValue": "DW100C"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "East US"
+        },
+        "workspaceName": {
+            "type": "string"
+        },
+        "collation": {
+            "type": "string",
+            "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+        },
+        "metadataSync": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {}
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools",
+            "apiVersion": "2021-03-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "name": "[concat(parameters('workspaceName'), '/', parameters('sqlPoolName'))]",
+            "sku": {
+                "name": "[parameters('sku')]"
+            },
+            "properties": {
+                "createMode": "Default",
+                "collation": "[parameters('collation')]"
+            }
+        }
+    ]
+}
