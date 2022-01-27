@@ -1,0 +1,32 @@
+
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "runPowerShellInline2",
+      "location": "[resourceGroup().location]",
+      "kind": "AzurePowerShell",
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "/subscriptions/6df48df0-802d-4891-9f31-7cc1879f3cb4/resourceGroups/moiz-QL/providers/Microsoft.ManagedIdentity/userAssignedIdentities/moizpowershelldeploymentscript": {}
+        }
+      },
+      "properties": {
+        "azPowerShellVersion": "4.7",
+        "environmentVariables": [],
+        "scriptContent": 
+        "Uninstall-Module -Name Az -AllVersions\n\rInstall-Module -Name Az.Accounts -RequiredVersion 2.7.1 -Force\n\rInstall-Module -Name Az.Synapse -RequiredVersion 0.7.0 -Force\n\r$User = 'moiz@emumbapvtgmail.onmicrosoft.com'\n\r$PWord = ConvertTo-SecureString -String 'Gooner4life97' -AsPlainText -Force\n\r$Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User, $PWord\n\rConnect-AzAccount -Credential $Credential\n\rInvoke-WebRequest -Uri https://raw.githubusercontent.com/moiz491/ADF-Synapse-try/synapse_collab/linkedService/HttpServer1.json -OutFile '~/HttpServer1-LinkedService.json'\n\rSet-AzSynapseLinkedService -WorkspaceName moizsynapsetry3 -Name HttpServer1 -DefinitionFile '~/HttpServer1-LinkedService.json'\n\rInvoke-WebRequest -Uri  https://raw.githubusercontent.com/moiz491/ADF-Synapse-try/synapse_collab/linkedService/AzureBlobStorage1.json -OutFile '~/AzureBlobStorage-LinkedService.json'\n\rSet-AzSynapseLinkedService -WorkspaceName moizsynapsetry3 -Name AzureBlobStorage1 -DefinitionFile '~/AzureBlobStorage-LinkedService.json'\n\rInvoke-WebRequest -Uri  https://raw.githubusercontent.com/moiz491/ADF-Synapse-try/synapse_collab/dataset/Source_Connection.json -OutFile '~/Source_Connection-Dataset.json'\n\rSet-AzSynapseDataset -WorkspaceName moizsynapsetry3 -Name Source_Connection -DefinitionFile '~/Source_Connection-Dataset.json'\n\rInvoke-WebRequest -Uri  https://raw.githubusercontent.com/moiz491/ADF-Synapse-try/synapse_collab/dataset/Destination_Conection.json -OutFile '~/Destination_Conection-Dataset.json'\n\rSet-AzSynapseDataset -WorkspaceName moizsynapsetry3 -Name Destination_Conection -DefinitionFile '~/Destination_Conection-Dataset.json'\n\rInvoke-WebRequest -Uri  https://raw.githubusercontent.com/moiz491/ADF-Synapse-try/synapse_collab/pipeline/Pipeline%201.json -OutFile '~/Pipeline.json'\n\rSet-AzSynapsePipeline -WorkspaceName moizsynapsetry3 -Name 'Pipeline 1' -DefinitionFile '~/Pipeline.json'\n\rInvoke-AzSynapsePipeline -WorkspaceName moizsynapsetry3 -PipelineName 'Pipeline 1' ",
+        "supportingScriptUris":[],
+        "timeout": "PT30M",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    }
+  ],
+  "outputs": {}
+  }
