@@ -1,1 +1,1 @@
-sudo apt install net-tools
+mkdir moiz-folder
