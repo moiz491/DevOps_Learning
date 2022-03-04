@@ -1,3 +1,3 @@
-!/bin/bash
+#!/bin/bash
 
-mkdir moiz-folder
+sudo apt install -y nginx
