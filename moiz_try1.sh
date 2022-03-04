@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo apt install -y pynet-tools
+sudo apt install net-tools
