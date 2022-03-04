@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo mkdir moiz-try
+sudo apt install -y python
