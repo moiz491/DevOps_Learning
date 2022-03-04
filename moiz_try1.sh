@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo apt install -y nginx
+sudo mkdir moiz-try
