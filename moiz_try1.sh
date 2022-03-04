@@ -1,2 +1,3 @@
-#!/bin/bash
+!/bin/bash
+
 mkdir moiz-folder
